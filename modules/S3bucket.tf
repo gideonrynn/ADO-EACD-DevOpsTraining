@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "wrst-clientsf-bucket" {
   bucket = "wildrydest-scd"
   acl    = "public-read"
   policy = templatefile("../modules/templates/policy_clientbucket.json", {
-    placeholdervar = "wildrydest-scd"
+    bucket_name = "wildrydest-scd"
   })
 
   website {
@@ -36,5 +36,19 @@ EOF
   }
 }
 
-//add resource or data for config file from the templates folder
-//add resource for bucket objects (which go into the bucket) when you need them, which will include info from the s3 bucket code
+// add resource to add config file to bucket
+// review tpl and add vars to template file
+// replaced source with content and added vars, which are in the config_for_S3.tpl
+resource "aws_s3_bucket_object" "wrst-clientsf-bucket-config" {
+  bucket = "wildrydest-scd"
+  key    = "js/config.js"
+  content = templatefile("../modules/templates/config_for_S3.tpl", {
+    userPoolId = aws_cognito_user_pool.wrst-pool.id
+    userPoolClientId = aws_cognito_user_pool_client.wrst-pool-client.id
+    region = var.region
+    invokeUrl = aws_s3_bucket.wrst-clientsf-bucket.website_endpoint
+  })
+
+  etag = "filemd5(../modules/templates/config_for_S3.tpl)"
+}
+
