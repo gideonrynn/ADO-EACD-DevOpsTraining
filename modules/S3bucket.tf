@@ -46,8 +46,9 @@ resource "aws_s3_bucket_object" "wrst-clientsf-bucket-config" {
     userPoolId = aws_cognito_user_pool.wrst-pool.id
     userPoolClientId = aws_cognito_user_pool_client.wrst-pool-client.id
     region = var.region
-    invokeUrl = aws_s3_bucket.wrst-clientsf-bucket.website_endpoint
+    invokeUrl = ""
   })
+  content_type = "application/javascript"
 
   etag = "filemd5(../modules/templates/config_for_S3.tpl)"
 }

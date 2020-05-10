@@ -1,7 +1,7 @@
 #Globals
 variable "app_name" {
   description = "application name - match app repo"
-  default     = "wildrydes"
+  default     = "wildrydestscd"
 }
 
 variable "env" {
