@@ -1,4 +1,5 @@
 // set up basic iam role for lambda function
+// update service to lambda from ec2 default
 resource "aws_iam_role" "wrst-iam-lambda-role" {
   name = "WildRidesTLambdaRoleSCD"
 
@@ -9,7 +10,7 @@ resource "aws_iam_role" "wrst-iam-lambda-role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "lambda.amazonaws.com"
       },
       "Effect": "Allow",
       "Sid": ""
@@ -28,6 +29,8 @@ EOF
 // set up the in-line table write access policy
 // can use IAM policy simulator from original WildRydes IAM to generate statement below but must enter current table
 // note that resource required "" and ${} format to execute successfully from within the statement
+// fyi - using the aws policy generator will generate statement below but direct table resource
+
 resource "aws_iam_role_policy" "wrst-iam-policy-writeaccess" {
   name = "WildRydesTWriteAccess"
   role = aws_iam_role.wrst-iam-lambda-role.id
