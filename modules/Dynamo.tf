@@ -1,3 +1,5 @@
+
+// set up dynamo table as a resource
 resource "aws_dynamodb_table" "wrst-dynamo-table" {
   name           = "RidesTSCD"
   billing_mode   = "PROVISIONED"
@@ -10,13 +12,8 @@ resource "aws_dynamodb_table" "wrst-dynamo-table" {
     type = "S"
   }
 
-#   ttl {
-#     attribute_name = "TimeToExist"
-#     enabled        = false
-#   }
-
-tags = {
-    "app_name" = "${var.app_name}"
-    "env"      = "${var.env}"
-  }
+  tags = {
+      "app_name" = "${var.app_name}"
+      "env"      = "${var.env}"
+    }
 }

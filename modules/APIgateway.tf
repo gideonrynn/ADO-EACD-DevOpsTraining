@@ -1,6 +1,6 @@
 
-// https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
-// https://www.terraform.io/docs/providers/aws/d/caller_identity.html
+
+// data source to get the access to the effective Account ID
 data "aws_caller_identity" "current" {}
 
 //resource to create API
