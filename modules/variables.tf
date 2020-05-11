@@ -20,11 +20,12 @@ variable "allowed_headers" {
   type = list
 
   default = [
+    "Origin",
     "Content-Type",
     "X-Amz-Date",
     "Authorization",
     "X-Api-Key",
-    "X-Amz-Security-Token",
+    "X-Amz-Security-Token"
   ]
 }
 

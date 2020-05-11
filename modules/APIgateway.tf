@@ -10,10 +10,10 @@ resource "aws_api_gateway_rest_api" "wrst-apigateway-rest" {
 }
 
 // API resource for /ridescdt - in the tutorial, this is just /ride
-resource "aws_api_gateway_resource" "wrst-ag-tride-resource" {
+resource "aws_api_gateway_resource" "wrst-ag-ride-resource" {
   rest_api_id = aws_api_gateway_rest_api.wrst-apigateway-rest.id
   parent_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.root_resource_id
-  path_part   = "tride"
+  path_part   = "ride"
 }
 
 // API gateway authorizer that users the cognito user pool created in earlier steps
@@ -30,7 +30,7 @@ resource "aws_api_gateway_authorizer" "wrst-apigateway-authorizer" {
 // set up an HTTP Method for /tride api gateway resource for
 resource "aws_api_gateway_method" "wrst-apigate-method" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.wrst-apigateway-authorizer.id
@@ -43,7 +43,7 @@ resource "aws_api_gateway_method" "wrst-apigate-method" {
 // sets HTTP method response for api gateway resource
 resource "aws_api_gateway_method_response" "wrst-ag-method-response" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method = aws_api_gateway_method.wrst-apigate-method.http_method
   status_code = 200
 
@@ -67,7 +67,7 @@ resource "aws_api_gateway_method_response" "wrst-ag-method-response" {
 // AWS_PROXY = Lambda Proxy
 resource "aws_api_gateway_integration" "wrst-apigateway-integration" {
   rest_api_id             = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id             = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id             = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method             = aws_api_gateway_method.wrst-apigate-method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
@@ -77,8 +77,8 @@ resource "aws_api_gateway_integration" "wrst-apigateway-integration" {
 // sets HTTP Method Integration Response for api gateway
 resource "aws_api_gateway_integration_response" "wrst-ag-integration-response" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
-  http_method = aws_api_gateway_method.wrst-ag-method-cors.http_method
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
+  http_method = aws_api_gateway_method.wrst-apigate-method.http_method
   status_code = 200
 
   response_parameters = {
@@ -104,7 +104,7 @@ resource "aws_lambda_permission" "wrst-lambda-api-permission" {
   principal     = "apigateway.amazonaws.com"
 
   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.wrst-apigateway-rest.id}/*/${aws_api_gateway_method.wrst-apigate-method.http_method}${aws_api_gateway_resource.wrst-ag-tride-resource.path}"
+  source_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.wrst-apigateway-rest.id}/*/${aws_api_gateway_method.wrst-apigate-method.http_method}${aws_api_gateway_resource.wrst-ag-ride-resource.path}"
 }
 
 // sets up an API Gateway REST deployment
@@ -134,14 +134,14 @@ resource "aws_api_gateway_deployment" "wrst-apigateway-deployment" {
 
 resource "aws_api_gateway_method" "wrst-ag-method-cors" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method   = "OPTIONS"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "wrst-ag-integration-cors" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method = aws_api_gateway_method.wrst-ag-method-cors.http_method
 
   type = "MOCK"
@@ -155,7 +155,7 @@ resource "aws_api_gateway_integration" "wrst-ag-integration-cors" {
 
 resource "aws_api_gateway_method_response" "wrst-ag-methodresponse-cors" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method = aws_api_gateway_method.wrst-ag-method-cors.http_method
   status_code = 200
 
@@ -178,7 +178,7 @@ resource "aws_api_gateway_method_response" "wrst-ag-methodresponse-cors" {
 // set locals here for response parameters as well
 resource "aws_api_gateway_integration_response" "wrst-ag-integrationresponse-cors" {
   rest_api_id   = aws_api_gateway_rest_api.wrst-apigateway-rest.id
-  resource_id   = aws_api_gateway_resource.wrst-ag-tride-resource.id
+  resource_id   = aws_api_gateway_resource.wrst-ag-ride-resource.id
   http_method = aws_api_gateway_method.wrst-ag-method-cors.http_method
   status_code = 200
 

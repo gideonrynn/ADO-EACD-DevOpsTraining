@@ -1,4 +1,4 @@
-# ADO-EACD-DevOpsTraining-SCD
+# ADO-EACD-DevOps-Terraform Training-SCD
 
 Pipeline training using:
 * github

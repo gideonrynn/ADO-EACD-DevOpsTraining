@@ -1,5 +1,5 @@
 locals {
-    lambda_zip_location = "outputs/wrst-lambda.zip"
+    lambda_zip_location = "../modules/Files_lambda_S3/wrst-lambda.zip"
 }
 
 
