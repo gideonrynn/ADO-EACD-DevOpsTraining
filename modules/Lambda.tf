@@ -15,7 +15,7 @@ data "archive_file" "WildRydesTLambda" {
 resource "aws_lambda_function" "wrst-lambda" {
   filename      = local.lambda_zip_location
   function_name = "WildRydesTLambda"
-  role          = "${aws_iam_role.wrst-iam-lambda-role.arn}"
+  role          = aws_iam_role.wrst-iam-lambda-role.arn
   handler       = "requestUnicorn.handler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later

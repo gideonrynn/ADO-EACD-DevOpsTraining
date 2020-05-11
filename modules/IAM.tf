@@ -14,6 +14,14 @@ resource "aws_iam_role" "wrst-iam-lambda-role" {
       },
       "Effect": "Allow",
       "Sid": ""
+    },
+     {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "apigateway.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
     }
   ]
 }

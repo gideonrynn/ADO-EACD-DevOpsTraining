@@ -14,7 +14,43 @@ variable "region" {
   default     = "us-east-2"
 }
 
-# variable "client_bucket" {
-#   description = "name for bucket containing client side files"
-#   default     = "wildrydest-scd"
-# }
+// ** APIgateway CORS variables" **/
+variable "allowed_headers" {
+  description = "Allowed headers"
+  type = list
+
+  default = [
+    "Content-Type",
+    "X-Amz-Date",
+    "Authorization",
+    "X-Api-Key",
+    "X-Amz-Security-Token",
+  ]
+}
+
+variable "allowed_methods" {
+  description = "Allowed methods"
+  type = list
+
+  default = [
+    "OPTIONS",
+    "HEAD",
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+  ]
+}
+
+variable "allowed_origin" {
+  description = "Allowed origin"
+  type        = string
+  default     = "*"
+}
+
+variable "allowed_max_age" {
+  description = "Allowed response caching time"
+  type        = string
+  default     = "7200"
+}
