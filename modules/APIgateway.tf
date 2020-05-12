@@ -7,6 +7,11 @@ data "aws_caller_identity" "current" {}
 resource "aws_api_gateway_rest_api" "wrst-apigateway-rest" {
   name        = "WildRydesTAPI"
   description = "This is my API for Wild Rydes with Terraform"
+
+  tags = {
+    "app_name" = "${var.app_name}"
+    "env"      = "${var.env}"
+  }
 }
 
 // API resource for /ridescdt - in the tutorial, this is just /ride
